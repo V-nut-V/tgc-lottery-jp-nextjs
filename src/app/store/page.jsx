@@ -67,12 +67,12 @@ export default function Store() {
       />
 
       <div className="prize-title">
-        {store.Store_ID ? <h6>奖项</h6> : ""}
+        {store.Store_ID ? <h6>賞品一覧</h6> : ""}
 
         {store.Store_ID && !inspect ? (
           <Space.Compact>
             <Search
-              addonBefore="验证码"
+              addonBefore="認証コード"
               style={{ width: "18rem", minWidth: "220px" }}
               value={checkPin}
               onChange={(e) => setCheckPin(e.target.value)}
@@ -92,7 +92,7 @@ export default function Store() {
         <>
           <div className="prize-list">
             <span className="quantity title">数量</span>
-            <span className="name title">奖品</span>
+            <span className="name title">賞品</span>
             {store.Prize.map((item, index) => (
               <Fragment key={item.Name + index}>
                 <span className="quantity">{item.Quantity}</span>
@@ -103,14 +103,14 @@ export default function Store() {
           </div>
 
           <span className="min-spent">
-            允许最小额度：¥{store.Min_Spent || " - "}
+            最低購入金額：¥{store.Min_Spent || " - "}
           </span>
           <span className="position">
-            位置：
-            {store.Position === "bottom" && "靠下 / bottom"}
-            {store.Position === "center" && "居中 / center"}
-            {store.Position === "left" && "靠左 / left"}
-            {store.Position === "right" && "靠右 / right"}
+            表示位置：
+            {store.Position === "bottom" && "下寄り / bottom"}
+            {store.Position === "center" && "中央 / center"}
+            {store.Position === "left" && "左寄り / left"}
+            {store.Position === "right" && "右寄り / right"}
             {!store.Position && "-"}
           </span>
         </>

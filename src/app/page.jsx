@@ -43,7 +43,7 @@ export default function Home() {
       Stop(store.Dashboard_Title);
       return;
     }
-    setRollingText("准备中...");
+    setRollingText("準備中...");
 
     try {
       const preHistory = await getHistory(invoiceNumber);
@@ -52,11 +52,11 @@ export default function Home() {
       const times = Math.floor(parseFloat(spent) / parseFloat(store.Min_Spent));
       console.log("times", times);
       if (preHistory && preHistory.length >= times) {
-        Stop("此号码已抽完奖项");
+        Stop("このレシート番号は抽選済みです");
         return;
       }
     } catch {
-      Stop("请再尝试或联系开发人员[Failed to fetch history]");
+      Stop("もう一度お試しいただくか、担当者にお問い合わせください [Failed to fetch history]");
       return;
     }
 
@@ -67,7 +67,7 @@ export default function Home() {
 
     // 2. 检查奖品池是否为空
     if (isPrizePoolEmpty(storeData.Prize)) {
-      Stop("抱歉，奖池已空");
+      Stop("申し訳ございません、賞品がなくなりました");
       return;
     }
 
@@ -101,7 +101,7 @@ export default function Home() {
       ]);
     } catch {
       Stop(
-        "请再尝试一遍或联系开发人员[failed to updateStore or failed to createHistory.]"
+        "もう一度お試しいただくか、担当者にお問い合わせください [failed to updateStore or failed to createHistory.]"
       );
       return;
     }
@@ -110,7 +110,7 @@ export default function Home() {
     try {
       currentHistory = await getHistory(invoiceNumber);
     } catch {
-      Stop("请再尝试一遍或联系开发人员[]");
+      Stop("もう一度お試しいただくか、担当者にお問い合わせください []");
       return;
     }
 
@@ -160,7 +160,7 @@ export default function Home() {
               />
             }
             prefix="￥"
-            placeholder="金额"
+            placeholder="金額"
             style={{ width: "13rem", minWidth: "150px" }}
             value={spent}
             onChange={(e) => {
@@ -170,13 +170,13 @@ export default function Home() {
               }
               if (isNaN(e.target.value)) {
                 spentChange("");
-                alert("请输入有效的数字");
+                alert("有効な数字を入力してください");
                 return;
               }
 
               if (parseFloat(e.target.value) > 99999) {
                 spentChange("");
-                alert("金额不能超过 99999 元");
+                alert("金額は99999円を超えることはできません");
               } else {
                 spentChange(e.target.value);
               }
@@ -191,14 +191,14 @@ export default function Home() {
               />
             }
             style={{ width: "25rem", minWidth: "250px" }}
-            placeholder="小票号码"
+            placeholder="レシート番号"
             value={invoiceNumber}
             onChange={(e) => {
               setInvoiceNumber(e.target.value);
               setRollingText(store.Dashboard_Title);
             }}
             onSearch={() => rolling(invoiceNumber)}
-            enterButton="点击抽奖"
+            enterButton="抽選する"
             loading={loading}
             disabled={disabled}
           />
@@ -208,13 +208,13 @@ export default function Home() {
         </span>
         {spent && (
           <span className="times-limit">
-            可抽奖次数：
+            抽選可能回数：
             {Math.floor(parseFloat(spent) / parseFloat(store.Min_Spent))}
             {history?.length > 0 &&
               Math.floor(parseFloat(spent) / parseFloat(store.Min_Spent)) >=
                 1 &&
               `
-                , 剩余抽奖次数：
+                、残り抽選回数：
                 ${
                   Math.floor(parseFloat(spent) / parseFloat(store.Min_Spent)) -
                   history.length

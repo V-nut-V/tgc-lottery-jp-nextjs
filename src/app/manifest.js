@@ -1,8 +1,8 @@
 export default function manifest() {
   return {
-    name: "TGC 抽奖",
-    short_name: "抽奖",
-    description: "TGC 门店线下抽奖APP",
+    name: "TGC 抽選",
+    short_name: "抽選",
+    description: "TGC 店舗用抽選アプリ",
     start_url: "/store",
     display: "standalone",
     background_color: "#ffffff",

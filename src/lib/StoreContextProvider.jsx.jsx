@@ -10,7 +10,7 @@ const initialStoreState = {
   documentId: 0,
   Store_ID: 0,
   Check_PIN: 0,
-  Store_Name: "请输入门店ID",
+  Store_Name: "店舗IDを入力してください",
   Background_URL: "",
   Prize: [],
   Dashboard_Title: "",
