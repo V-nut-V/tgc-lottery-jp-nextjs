@@ -190,7 +190,7 @@ export default function Home() {
                 color="#54C8E8"
               />
             }
-            style={{ width: "25rem", minWidth: "250px" }}
+            style={{ width: "30rem", minWidth: "250px" }}
             placeholder="レシート番号"
             value={invoiceNumber}
             onChange={(e) => {
