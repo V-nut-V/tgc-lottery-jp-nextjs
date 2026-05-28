@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lucky Draw App
+
+A Japanese-localized in-store lottery / lucky draw web application built with Next.js. Staff enter a customer's receipt number and purchase amount; the app validates eligibility, draws a weighted random prize from the store's prize pool, and records the result.
+
+## Features
+
+- **Receipt-based lottery** — enter a receipt number and purchase amount to trigger a draw
+- **Weighted random draw** — prizes are drawn proportionally by remaining quantity
+- **Eligibility check** — minimum spend threshold enforced; duplicate draws on the same receipt are prevented
+- **Animated rolling display** — prize names scroll before the final result is revealed
+- **Draw history** — past results for a given receipt are shown in real time
+- **Store management** — load store configuration by numeric Store ID; PIN-protected prize inventory inspection
+- **Configurable UI** — background image URL and text position (center / bottom / left / right) are stored per-store
+- **PWA ready** — includes web app manifest and icons
+
+## Tech Stack
+
+| Layer | Library |
+|---|---|
+| Framework | Next.js 15 (App Router) |
+| UI | React 19, Ant Design 5, styled-components 6 |
+| Icons | react-icons 5 |
+| Data fetching | Apollo Client 3 + GraphQL (Strapi backend) |
+| Date formatting | dayjs |
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Main lottery dashboard |
+| `/store` | Store selector and prize inventory inspector |
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A running Strapi instance (see [Environment Variables](#environment-variables))
+
+### Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Create a `.env` file in the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_API_BASE_URL=https://<your-strapi-host>/strapi-luckydraw
+```
 
-## Learn More
+### Run
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Development
+npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Production build
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Navigate to `/store` and enter the **Store ID** to load the store configuration.
+2. Return to `/` (or be redirected automatically).
+3. Enter the customer's **purchase amount (金額)** and **receipt number (レシート番号)**, then press **抽選する**.
+4. The animated display reveals the prize. Results are saved to the backend and shown in the history list below.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To inspect the prize inventory on the `/store` page, enter the store's **認証コード (Check PIN)**.
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── page.jsx              # Main lottery page
+│   ├── store/page.jsx        # Store settings page
+│   ├── index.style.js        # Styled-components for main page
+│   └── layout.jsx            # Root layout
+├── components/
+│   └── Button.style.js
+└── lib/
+    ├── lottery.js             # Draw logic (weighted random, rolling animation)
+    ├── ApolloClient.js        # Apollo client setup
+    ├── ApolloWrapper.jsx
+    ├── StoreContextProvider.jsx  # Store + history GraphQL context
+    ├── SettingsContextProvider.jsx
+    └── settings.js
+```
+
+## Backend (Strapi)
+
+The app communicates with a Strapi CMS via GraphQL. Required content types:
+
+- **Store** — `Store_ID`, `Store_Name`, `Check_PIN`, `Dashboard_Title`, `Min_Spent`, `Background_URL`, `Position`, `Prize[]`
+- **History** — `Code`, `Store_ID`, `Store_Name`, `Prize_Name`, `Spent`, `Create_Date`
