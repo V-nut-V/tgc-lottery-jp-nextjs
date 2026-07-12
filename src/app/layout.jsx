@@ -73,9 +73,6 @@ const theme = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={myFont.className}>
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-      </head>
       <body>
         <ApolloWrapper>
           <ConfigProvider theme={theme}>

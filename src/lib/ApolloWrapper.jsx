@@ -1,7 +1,7 @@
 "use client";
 // ^ this file needs the "use client" pragma
 
-import { HttpLink } from "@apollo/client";
+import { HttpLink } from "@apollo/client/link/http";
 import {
   ApolloNextAppProvider,
   ApolloClient,
